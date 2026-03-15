@@ -1,0 +1,2668 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hidden Gems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#dc2626',
+                        secondary: '#f59e0b',
+                        dark: { 900: '#0f172a', 800: '#1e293b', 700: '#334155' },
+                        light: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+       
+        .light body { background-color: #f8fafc; color: #1e293b; }
+        .dark body { background-color: #0f172a; color: #f8fafc; }
+       
+        .light .card { background: white; border-color: #e2e8f0; }
+        .dark .card { background: #1e293b; border-color: #334155; }
+       
+        .light .input { background: white; border-color: #e2e8f0; color: #1e293b; }
+        .dark .input { background: #334155; border-color: #475569; color: white; }
+       
+        .light .text-muted { color: #64748b; }
+        .dark .text-muted { color: #94a3b8; }
+       
+        .light .bg-subtle { background-color: #f1f5f9; }
+        .dark .bg-subtle { background-color: #1e293b; }
+       
+        .restaurant-card { transition: all 0.3s ease; }
+        .restaurant-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .restaurant-card:active { transform: scale(0.98); }
+       
+        .filter-chip { transition: all 0.2s; }
+        .filter-chip.active { background-color: #dc2626; color: white; border-color: #dc2626; }
+       
+        .bottom-nav { backdrop-filter: blur(10px); }
+        .light .bottom-nav { background: rgba(255, 255, 255, 0.9); border-top-color: #e2e8f0; }
+        .dark .bottom-nav { background: rgba(15, 23, 42, 0.9); border-top-color: #334155; }
+       
+        .nav-item.active { color: #dc2626; }
+        .nav-item.active .nav-icon { transform: translateY(-2px); }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: #dc2626;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+       
+        #reader { width: 100%; border-radius: 1rem; overflow: hidden; }
+        #reader video { border-radius: 1rem; }
+       
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        .animate-slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+       
+        .toggle-checkbox:checked { right: 0; border-color: #dc2626; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #dc2626; }
+       
+        .scanner-overlay {
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.8) 100%);
+        }
+       
+        .qr-frame {
+            border: 2px solid rgba(255,255,255,0.5);
+            box-shadow: 0 0 0 4000px rgba(0,0,0,0.5);
+        }
+
+        .dietary-badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 4px; 
+            padding: 2px 8px; 
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 500;
+        }
+        .veg-badge { background-color: #dcfce7; color: #166534; }
+        .vegan-badge { background-color: #dcfce7; color: #15803d; }
+        .gf-badge { background-color: #fef3c7; color: #92400e; }
+        .spicy-badge { background-color: #fee2e2; color: #991b1b; }
+        .allergen-badge { background-color: #fee2e2; color: #991b1b; border: 1px dashed #ef4444; }
+       
+        .lang-option:hover { background-color: rgba(220, 38, 38, 0.1); }
+        .lang-search:focus { outline: none; border-color: #dc2626; }
+
+        .dining-mode-card {
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .dining-mode-card:hover {
+            border-color: #dc2626;
+            background-color: rgba(220, 38, 38, 0.05);
+        }
+        .dining-mode-card.selected {
+            border-color: #dc2626;
+            background-color: rgba(220, 38, 38, 0.1);
+        }
+
+        .payment-qr-display {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .star-rating {
+            color: #fbbf24;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .star-rating:hover {
+            transform: scale(1.2);
+        }
+        .star-rating.empty {
+            color: #e5e7eb;
+        }
+
+        .favorite-btn {
+            transition: all 0.2s;
+        }
+        .favorite-btn.active {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .favorite-btn:active {
+            transform: scale(0.9);
+        }
+
+        .price-indicator {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Location Badge Styling */
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        .distance-badge {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased pb-24">
+
+    <!-- Notifications Panel -->
+    <div id="notifications-panel" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
+        <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white dark:bg-dark-800 shadow-2xl animate-slide-in overflow-y-auto">
+            <div class="p-6 border-b border-current border-opacity-10 flex justify-between items-center sticky top-0 bg-inherit z-10">
+                <h2 class="text-xl font-bold" data-i18n="notifications">Notifications</h2>
+                <button onclick="closeNotifications()" class="w-10 h-10 rounded-full bg-subtle flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="notifications-list" class="p-4 space-y-3">
+                <!-- Notifications injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="rating-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in">
+            <h3 class="text-xl font-bold mb-2 text-center" data-i18n="rateYourExperience">Rate Your Experience</h3>
+            <p class="text-sm text-muted text-center mb-6" id="rating-restaurant-name">Restaurant Name</p>
+            
+            <div class="flex justify-center gap-2 mb-6 text-3xl" id="star-container">
+                <i class="fas fa-star star-rating empty" data-rating="1"></i>
+                <i class="fas fa-star star-rating empty" data-rating="2"></i>
+                <i class="fas fa-star star-rating empty" data-rating="3"></i>
+                <i class="fas fa-star star-rating empty" data-rating="4"></i>
+                <i class="fas fa-star star-rating empty" data-rating="5"></i>
+            </div>
+            
+            <textarea id="review-text" class="input w-full px-4 py-3 border rounded-xl mb-4 h-24 resize-none" placeholder="Tell us about your experience (optional)..."></textarea>
+            
+            <button onclick="submitRating()" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-red-600/20" data-i18n="submitReview">
+                Submit Review
+            </button>
+            
+            <button onclick="closeRatingModal()" class="w-full py-3 text-muted font-medium mt-2" data-i18n="skip">
+                Skip
+            </button>
+        </div>
+    </div>
+
+    <!-- Account Creation Modal -->
+    <div id="account-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary text-2xl font-bold">
+                    HG
+                </div>
+                <h2 class="text-2xl font-bold" data-i18n="createAccount">Create Account</h2>
+                <p class="text-sm text-muted mt-1" data-i18n="personalizeExperience">Personalize your experience</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-i18n="fullName">Full Name</label>
+                    <input type="text" id="account-name" class="input w-full px-4 py-3 border rounded-xl" placeholder="John Doe">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-i18n="email">Email</label>
+                    <input type="email" id="account-email" class="input w-full px-4 py-3 border rounded-xl" placeholder="john@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-i18n="selectLanguage">Select Language</label>
+                    <div class="relative">
+                        <select id="account-language" class="input w-full px-4 py-3 border rounded-xl appearance-none bg-transparent">
+                            <option value="en">English (English)</option>
+                            <option value="es">Spanish (Español)</option>
+                            <option value="zh">Chinese (中文)</option>
+                            <option value="fr">French (Français)</option>
+                            <option value="ar">Arabic (العربية)</option>
+                            <option value="hi">Hindi (हिन्दी)</option>
+                            <option value="de">German (Deutsch)</option>
+                            <option value="ja">Japanese (日本語)</option>
+                            <option value="ko">Korean (한국어)</option>
+                            <option value="pt">Portuguese (Português)</option>
+                            <option value="ru">Russian (Русский)</option>
+                            <option value="it">Italian (Italiano)</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <button onclick="sendVerificationCode()" class="w-full py-4 bg-primary text-white rounded-2xl font-bold mt-6 shadow-lg shadow-red-600/20" data-i18n="continue">
+                    Continue
+                </button>
+                
+                <button onclick="skipAccountCreation()" class="w-full py-3 text-muted hover:text-current font-medium text-sm" data-i18n="continueAsGuest">
+                    Continue as Guest
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Verification Modal -->
+    <div id="verification-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary text-2xl">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h2 class="text-2xl font-bold" data-i18n="verifyEmail">Verify Email</h2>
+                <p class="text-sm text-muted mt-1" data-i18n="codeSent">We sent a 6-digit code to</p>
+                <p class="text-sm font-bold text-primary" id="verification-email-display"></p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-i18n="enterCode">Enter Verification Code</label>
+                    <input type="text" id="verification-code" maxlength="6" class="input w-full px-4 py-3 border rounded-xl text-center text-2xl tracking-widest font-bold" placeholder="000000">
+                </div>
+
+                <button onclick="verifyCode()" class="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-red-600/20" data-i18n="verify">
+                    Verify
+                </button>
+                
+                <button onclick="resendCode()" class="w-full py-3 text-primary font-medium text-sm" data-i18n="resendCode">
+                    Resend Code
+                </button>
+                
+                <button onclick="backToAccountCreation()" class="w-full py-2 text-muted text-sm" data-i18n="back">
+                    Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment QR Code Display Modal -->
+    <div id="payment-qr-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in text-center">
+            <h3 class="text-xl font-bold mb-2" data-i18n="scanToPay">Scan to Pay</h3>
+            <p class="text-sm text-muted mb-4" data-i18n="scanQRWithPhone">Scan this QR code with your phone to complete payment</p>
+            
+            <div class="payment-qr-display mb-4">
+                <img id="payment-qr-image" src="" class="w-full rounded-2xl border-2 border-primary/20" alt="Payment QR">
+            </div>
+            
+            <p class="text-lg font-bold mb-4" id="payment-amount-display">$0.00</p>
+            
+            <button onclick="closePaymentQR()" class="w-full py-3 bg-primary text-white rounded-xl font-bold" data-i18n="done">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <!-- Language Selector Modal -->
+    <div id="language-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in max-h-[80vh] flex flex-col">
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 text-primary">
+                    <i class="fas fa-globe text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold" data-i18n="selectLanguage">Select Language</h3>
+                <p class="text-sm text-muted" data-i18n="languageSubtext">Choose your preferred language to continue</p>
+            </div>
+            
+            <div class="relative mb-4">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted"></i>
+                <input type="text" id="language-search" placeholder="Search languages..." 
+                    class="input w-full pl-10 pr-4 py-3 border rounded-xl text-sm"
+                    oninput="filterLanguages()">
+            </div>
+            
+            <div id="language-list" class="overflow-y-auto flex-1 space-y-1 pr-1"></div>
+        </div>
+    </div>
+
+    <!-- Food Details Modal -->
+    <div id="food-details-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6">
+        <div class="card rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-sm border animate-fade-in max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-xl font-bold" id="details-food-name">Food Item</h3>
+                <button onclick="closeFoodDetails()" class="w-8 h-8 rounded-full bg-subtle flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <img id="details-food-img" src="" class="w-full h-48 rounded-2xl object-cover mb-4 bg-gray-200">
+            
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-bold text-sm mb-2 text-muted uppercase tracking-wider" data-i18n="ingredients">Ingredients</h4>
+                    <p id="details-ingredients" class="text-sm leading-relaxed">-</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-sm mb-2 text-muted uppercase tracking-wider" data-i18n="allergens">Allergens</h4>
+                    <div id="details-allergens" class="flex flex-wrap gap-2">-</div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-sm mb-2 text-muted uppercase tracking-wider" data-i18n="dietaryInfo">Dietary Information</h4>
+                    <div id="details-dietary" class="flex flex-wrap gap-2">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No Data Warning -->
+    <div id="no-data-warning" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="card rounded-3xl p-8 max-w-sm w-full text-center border shadow-2xl animate-fade-in">
+            <div class="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-exclamation-triangle text-red-600 text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2" data-i18n="noRestaurants">No Restaurants Found</h2>
+            <p class="text-muted mb-6" data-i18n="loadDemoText">Load demo data to see how the app works with multiple restaurants.</p>
+            <button onclick="initDemoData()" class="w-full py-4 bg-primary text-white rounded-2xl font-bold mb-3 hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20" data-i18n="loadDemo">Load Demo Data</button>
+            <button onclick="location.reload()" class="w-full py-4 bg-subtle text-current rounded-2xl font-bold hover:opacity-80 transition-colors" data-i18n="retry">Retry</button>
+        </div>
+    </div>
+
+    <!-- VIEW: RESTAURANT LIST (Home) -->
+    <div id="view-restaurants" class="view-section max-w-lg mx-auto px-4 py-6">
+        <!-- Location Bar -->
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center gap-2 text-sm text-muted">
+                <i class="fas fa-map-marker-alt text-primary"></i>
+                <span id="current-location-display" data-i18n="detectingLocation">Detecting location...</span>
+            </div>
+            <button onclick="refreshLocation()" class="text-xs text-primary font-medium" data-i18n="refresh">
+                Refresh
+            </button>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <p class="text-xs text-muted uppercase tracking-wider mb-1" id="location-display">📍 <span data-i18n="nearCampus">Near Campus</span></p>
+                <h1 class="text-3xl font-bold" data-i18n="appName">Hidden Gems</h1>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="toggleNotifications()" class="w-12 h-12 rounded-full bg-subtle flex items-center justify-center hover:opacity-80 transition-opacity relative">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span id="notification-badge" class="notification-badge hidden">0</span>
+                </button>
+                <button onclick="showSettings()" class="w-12 h-12 rounded-full bg-subtle flex items-center justify-center hover:opacity-80 transition-opacity">
+                    <i class="fas fa-cog text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-6 space-y-4">
+            <div class="relative">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-muted"></i>
+                <input type="text" id="restaurant-search" placeholder="Search restaurants..." data-i18n-placeholder="searchRestaurants"
+                    class="input w-full pl-12 pr-4 py-4 border rounded-2xl font-medium focus:border-primary focus:outline-none transition-all"
+                    oninput="filterRestaurants()">
+            </div>
+           
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+                <button onclick="setTypeFilter('all')" class="filter-chip active px-4 py-2 border rounded-full text-sm font-medium whitespace-nowrap bg-subtle border-transparent" data-type="all" data-i18n="all">All</button>
+                <button onclick="setTypeFilter('favorites')" class="filter-chip px-4 py-2 border rounded-full text-sm font-medium whitespace-nowrap bg-subtle border-transparent text-muted" data-type="favorites">❤️ <span data-i18n="favorites">Favorites</span></button>
+                <button onclick="setTypeFilter('nearby')" class="filter-chip px-4 py-2 border rounded-full text-sm font-medium whitespace-nowrap bg-subtle border-transparent text-muted" data-type="nearby">📍 <span data-i18n="nearby">Nearby</span></button>
+                <button onclick="setTypeFilter('school')" class="filter-chip px-4 py-2 border rounded-full text-sm font-medium whitespace-nowrap bg-subtle border-transparent text-muted" data-type="school">🏫 <span data-i18n="school">School</span></button>
+                <button onclick="setTypeFilter('small')" class="filter-chip px-4 py-2 border rounded-full text-sm font-medium whitespace-nowrap bg-subtle border-transparent text-muted" data-type="small">🍽️ <span data-i18n="small">Small</span></button>
+            </div>
+           
+            <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar">
+                <span class="text-sm text-muted whitespace-nowrap">📍 <span data-i18n="location">Location</span>:</span>
+                <button onclick="setLocationFilter('all')" class="loc-chip active px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-white" data-loc="all" data-i18n="all">All</button>
+                <button onclick="setLocationFilter('Campus')" class="loc-chip px-3 py-1.5 rounded-full text-xs font-medium bg-subtle text-muted" data-loc="Campus" data-i18n="campus">Campus</button>
+                <button onclick="setLocationFilter('Downtown')" class="loc-chip px-3 py-1.5 rounded-full text-xs font-medium bg-subtle text-muted" data-loc="Downtown" data-i18n="downtown">Downtown</button>
+                <button onclick="setLocationFilter('Mall')" class="loc-chip px-3 py-1.5 rounded-full text-xs font-medium bg-subtle text-muted" data-loc="Mall" data-i18n="mall">Mall</button>
+            </div>
+        </div>
+
+        <div id="restaurant-grid" class="grid grid-cols-1 gap-4 pb-24"></div>
+    </div>
+
+    <!-- VIEW: QR SCANNER -->
+    <div id="view-scanner" class="view-section hidden fixed inset-0 z-30 bg-black">
+        <div class="relative h-full flex flex-col">
+            <div class="absolute top-0 left-0 right-0 z-40 p-6 pt-12 bg-gradient-to-b from-black/80 to-transparent">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-white text-xl font-bold" data-i18n="scanTableQR">Scan Table QR</h2>
+                    <button onclick="stopScanner(); showView('view-restaurants')" class="w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+           
+            <div id="reader" class="flex-1 relative"></div>
+           
+            <div class="absolute inset-0 pointer-events-none scanner-overlay flex items-center justify-center">
+                <div class="qr-frame w-64 h-64 rounded-3xl relative">
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary rounded-tl-3xl"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary rounded-tr-3xl"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary rounded-bl-3xl"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary rounded-br-3xl"></div>
+                </div>
+            </div>
+           
+            <div class="absolute bottom-24 left-0 right-0 text-center text-white/80 p-6">
+                <p class="text-sm" data-i18n="scanInstructions">Point camera at the table QR code to<br>automatically open the menu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: ORDERS -->
+    <div id="view-orders" class="view-section hidden max-w-lg mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold" data-i18n="myOrders">My Orders</h1>
+            <div class="flex bg-subtle rounded-xl p-1">
+                <button onclick="setOrdersView('active')" id="btn-active-orders" class="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white transition-all" data-i18n="active">Active</button>
+                <button onclick="setOrdersView('history')" id="btn-history-orders" class="px-4 py-2 rounded-lg text-sm font-medium text-muted transition-all" data-i18n="history">History</button>
+            </div>
+        </div>
+        <div id="orders-list" class="space-y-4 pb-24">
+            <div class="text-center py-12 text-muted">
+                <div class="w-20 h-20 bg-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-receipt text-2xl"></i>
+                </div>
+                <p data-i18n="noOrders">No orders yet</p>
+                <button onclick="showView('view-restaurants')" class="mt-4 px-6 py-2 bg-primary text-white rounded-full font-medium" data-i18n="browseRestaurants">Browse Restaurants</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: PROFILE/SETTINGS -->
+    <div id="view-profile" class="view-section hidden max-w-lg mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold mb-6" data-i18n="profile">Profile</h1>
+       
+        <div class="card rounded-3xl p-6 mb-6 border">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary text-2xl font-bold" id="profile-initials">
+                    HG
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg" id="profile-name" data-i18n="guestUser">Guest User</h3>
+                    <p class="text-sm text-muted" id="profile-email">table@hiddengems.com</p>
+                    <span id="verification-badge" class="hidden text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium" data-i18n="verified">Verified</span>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="editProfile()" class="flex-1 py-3 border-2 border-dashed border-current rounded-xl text-sm font-medium opacity-60 hover:opacity-100 transition-opacity" data-i18n="editProfile">
+                    Edit Profile
+                </button>
+                <button onclick="showAccountModal()" id="create-account-btn" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-medium hover:bg-red-700 transition-colors" data-i18n="createAccount">
+                    Create Account
+                </button>
+            </div>
+        </div>
+
+        <div class="card rounded-3xl border overflow-hidden mb-6">
+            <div class="p-4 border-b border-current border-opacity-10 flex items-center justify-between cursor-pointer hover:bg-subtle transition-colors" onclick="showLanguageSelector()">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-subtle rounded-full flex items-center justify-center">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div>
+                        <span class="font-medium block" data-i18n="language">Language</span>
+                        <span class="text-xs text-muted" id="current-language-display">English (English)</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-muted"></i>
+            </div>
+           
+            <div class="p-4 border-b border-current border-opacity-10 flex items-center justify-between cursor-pointer hover:bg-subtle transition-colors" onclick="showView('view-favorites')">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-subtle rounded-full flex items-center justify-center text-red-500">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div>
+                        <span class="font-medium block" data-i18n="myFavorites">My Favorites</span>
+                        <span class="text-xs text-muted" id="favorites-count-display">0 saved places</span>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right text-muted"></i>
+            </div>
+           
+            <div class="p-4 border-b border-current border-opacity-10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-subtle rounded-full flex items-center justify-center">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <span class="font-medium" data-i18n="darkMode">Dark Mode</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="dark-mode-toggle" class="sr-only peer" onchange="toggleDarkMode()">
+                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+           
+            <div class="p-4 border-b border-current border-opacity-10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-subtle rounded-full flex items-center justify-center">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <span class="font-medium" data-i18n="notifications">Notifications</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" checked class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+           
+            <div class="p-4 flex items-center justify-between cursor-pointer hover:bg-subtle transition-colors" onclick="showPaymentMethods()">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-subtle rounded-full flex items-center justify-center">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="font-medium" data-i18n="paymentMethods">Payment Methods</span>
+                </div>
+                <i class="fas fa-chevron-right text-muted"></i>
+            </div>
+        </div>
+
+        <div class="card rounded-3xl border overflow-hidden mb-6">
+            <div class="p-4 border-b border-current border-opacity-10">
+                <h4 class="font-bold mb-1" data-i18n="accessibility">Accessibility</h4>
+                <p class="text-xs text-muted" data-i18n="customizeExperience">Customize your experience</p>
+            </div>
+            <div class="p-4 flex items-center justify-between">
+                <span class="font-medium" data-i18n="largeText">Large Text</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="large-text-toggle" class="sr-only peer" onchange="toggleLargeText()">
+                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+            </div>
+        </div>
+
+        <button onclick="clearAllData()" class="w-full py-4 text-red-600 font-medium hover:bg-red-50 dark:hover:bg-red-900/20 rounded-2xl transition-colors" data-i18n="clearAllData">
+            Clear All Data
+        </button>
+       
+        <p class="text-center text-xs text-muted mt-6">Hidden Gems v1.0 • Campus Dining App</p>
+    </div>
+
+    <!-- VIEW: FAVORITES -->
+    <div id="view-favorites" class="view-section hidden max-w-lg mx-auto px-4 py-6">
+        <div class="flex items-center gap-4 mb-6">
+            <button onclick="showView('view-profile')" class="w-10 h-10 rounded-full bg-subtle flex items-center justify-center">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="text-3xl font-bold" data-i18n="myFavorites">My Favorites</h1>
+        </div>
+        <div id="favorites-list" class="space-y-4 pb-24">
+            <div class="text-center py-12 text-muted">
+                <div class="w-20 h-20 bg-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heart text-2xl text-gray-300"></i>
+                </div>
+                <p data-i18n="noFavorites">No favorites yet</p>
+                <p class="text-sm mt-2 mb-4" data-i18n="favoritesSubtext">Save your favorite places to find them easily when you travel</p>
+                <button onclick="showView('view-restaurants')" class="px-6 py-2 bg-primary text-white rounded-full font-medium" data-i18n="browseRestaurants">Browse Restaurants</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: MENU (Individual Restaurant) -->
+    <div id="view-menu" class="view-section hidden max-w-lg mx-auto">
+        <div class="sticky top-0 z-40 bg-inherit border-b border-current border-opacity-10 px-4 py-4 flex items-center gap-4">
+            <button onclick="backToRestaurants()" class="w-10 h-10 rounded-full bg-subtle flex items-center justify-center hover:opacity-80">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="flex-1 min-w-0">
+                <h2 class="font-bold text-lg leading-tight truncate" id="menu-restaurant-name">Restaurant</h2>
+                <p class="text-xs text-muted truncate">
+                    <span id="menu-table-display" class="hidden">
+                        <span data-i18n="table">Table</span> <span id="menu-table-num">--</span> • 
+                    </span>
+                    <span id="menu-dining-mode" data-i18n="dineIn">Dine-in</span>
+                </p>
+            </div>
+            <button onclick="toggleCurrentFavorite()" id="menu-favorite-btn" class="w-10 h-10 rounded-full bg-subtle flex items-center justify-center favorite-btn text-gray-400 hover:text-red-500">
+                <i class="fas fa-heart text-xl"></i>
+            </button>
+        </div>
+
+        <div class="px-4 py-4 pb-32">
+            <div class="card rounded-2xl p-4 mb-6 border">
+                <div class="flex gap-4">
+                    <img id="menu-restaurant-img" src="" class="w-20 h-20 rounded-xl object-cover flex-shrink-0" alt="">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <span id="menu-restaurant-type" class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium">School</span>
+                            <span id="menu-distance-badge" class="distance-badge hidden">0.5 mi</span>
+                        </div>
+                        <p id="menu-restaurant-location" class="text-sm text-muted mt-1 truncate">📍 Campus Center</p>
+                        <p id="menu-restaurant-address" class="text-xs text-muted mt-0.5 truncate opacity-75">123 Main St</p>
+                        <div class="flex gap-2 mt-2 items-center flex-wrap">
+                            <span class="text-xs text-muted">⭐ <span id="restaurant-rating-display">4.8</span></span>
+                            <span class="text-xs text-muted">•</span>
+                            <span class="text-xs font-semibold text-green-600 price-indicator" id="restaurant-price-display">$$</span>
+                            <span class="text-xs text-muted">•</span>
+                            <span class="text-xs text-muted" id="restaurant-time">20-30 min</span>
+                        </div>
+                        <!-- Directions Button -->
+                        <button onclick="openDirections()" class="mt-2 text-xs flex items-center gap-1 text-primary font-medium hover:underline">
+                            <i class="fas fa-directions"></i>
+                            <span data-i18n="getDirections">Get Directions</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Preview -->
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold" data-i18n="reviews">Reviews</h3>
+                <button onclick="showAllReviews()" class="text-xs text-primary" data-i18n="seeAll">See All</button>
+            </div>
+            <div id="reviews-preview" class="mb-6 space-y-3">
+                <!-- Reviews injected here -->
+            </div>
+
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-6 pb-2" id="menu-categories">
+                <button onclick="filterMenuCategory('all')" class="menu-cat active px-4 py-2 bg-subtle rounded-full text-sm font-medium whitespace-nowrap" data-i18n="all">All</button>
+            </div>
+
+            <div id="menu-items" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- All Reviews Modal -->
+    <div id="reviews-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6">
+        <div class="card rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-lg border animate-fade-in max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold" data-i18n="allReviews">All Reviews</h3>
+                <button onclick="closeReviewsModal()" class="w-8 h-8 rounded-full bg-subtle flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="all-reviews-list" class="overflow-y-auto flex-1 space-y-4 pr-2">
+                <!-- All reviews here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: CHECKOUT -->
+    <div id="view-checkout" class="view-section hidden fixed inset-0 z-50 bg-inherit overflow-y-auto">
+        <div class="max-w-lg mx-auto px-4 py-6 min-h-screen">
+            <div class="flex items-center gap-4 mb-6">
+                <button onclick="backToMenu()" class="w-10 h-10 rounded-full bg-subtle flex items-center justify-center">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="text-2xl font-bold" data-i18n="checkout">Checkout</h1>
+            </div>
+
+            <div id="checkout-content" class="space-y-6 pb-32"></div>
+        </div>
+    </div>
+
+    <!-- Floating Cart -->
+    <div id="floating-cart" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm px-4">
+        <div class="card rounded-2xl p-4 shadow-2xl border border-primary/20 bg-primary/5 backdrop-blur-lg">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold"><span id="cart-count">0</span> <span data-i18n="items">items</span></p>
+                        <p class="text-xs text-muted" data-i18n="tapToReview">Tap to review</p>
+                    </div>
+                </div>
+                <span class="text-xl font-bold text-primary">$<span id="cart-total">0.00</span></span>
+            </div>
+            <button onclick="openCheckout()" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-red-700 transition-colors" data-i18n="proceedToCheckout">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Call Waiter Floating Button -->
+    <div id="call-waiter-btn" class="hidden fixed bottom-40 right-4 z-40">
+        <button onclick="callWaiter()" class="bg-primary text-white p-4 rounded-full shadow-lg shadow-red-600/30 animate-bounce hover:scale-110 transition-transform flex flex-col items-center gap-1 min-w-[4rem]">
+            <i class="fas fa-bell text-xl"></i>
+            <span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="callWaiter">Waiter</span>
+        </button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 border-t z-50 px-6 py-2">
+        <div class="max-w-lg mx-auto flex justify-around items-center">
+            <button onclick="showView('view-restaurants')" class="nav-item active flex flex-col items-center gap-1 p-2 text-muted hover:text-primary transition-colors" data-view="view-restaurants">
+                <i class="nav-icon fas fa-home text-xl transition-transform"></i>
+                <span class="text-xs font-medium" data-i18n="restaurants">Restaurants</span>
+            </button>
+           
+            <button onclick="startScanner()" class="nav-item flex flex-col items-center gap-1 p-2 text-muted hover:text-primary transition-colors relative" data-view="view-scanner">
+                <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg shadow-red-600/30 -mt-8 border-4 border-white dark:border-dark-900">
+                    <i class="fas fa-camera text-xl"></i>
+                </div>
+                <span class="text-xs font-medium" data-i18n="scan">Scan</span>
+            </button>
+           
+            <button onclick="showView('view-orders')" class="nav-item flex flex-col items-center gap-1 p-2 text-muted hover:text-primary transition-colors relative" data-view="view-orders">
+                <i class="nav-icon fas fa-receipt text-xl transition-transform"></i>
+                <span class="text-xs font-medium" data-i18n="orders">Orders</span>
+                <span id="nav-notification-badge" class="notification-badge hidden absolute -top-1 right-1">0</span>
+            </button>
+           
+            <button onclick="showView('view-profile')" class="nav-item flex flex-col items-center gap-1 p-2 text-muted hover:text-primary transition-colors" data-view="view-profile">
+                <i class="nav-icon fas fa-user text-xl transition-transform"></i>
+                <span class="text-xs font-medium" data-i18n="profile">Profile</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Table Selector Modal -->
+    <div id="table-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="card rounded-3xl p-6 max-w-sm w-full border animate-fade-in">
+            <h3 class="text-xl font-bold mb-4" data-i18n="selectTable">Select Table</h3>
+            <div class="grid grid-cols-4 gap-2 mb-4" id="table-grid"></div>
+            <button onclick="closeTableModal()" class="w-full py-3 bg-subtle rounded-xl font-medium" data-i18n="cancel">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // TRANSLATIONS
+        const translations = {
+            en: {
+                appName: "Hidden Gems", nearCampus: "Near Campus", noRestaurants: "No Restaurants Found",
+                loadDemoText: "Load demo data to see how the app works with multiple restaurants.",
+                loadDemo: "Load Demo Data", retry: "Retry", searchRestaurants: "Search restaurants...",
+                all: "All", school: "School", small: "Small",
+                nearby: "Nearby", detectingLocation: "Detecting location...", refresh: "Refresh",
+                location: "Location", campus: "Campus", downtown: "Downtown", mall: "Mall",
+                scanTableQR: "Scan Table QR", scanInstructions: "Point camera at the table QR code to<br>automatically open the menu",
+                myOrders: "My Orders", noOrders: "No orders yet", browseRestaurants: "Browse Restaurants",
+                profile: "Profile", guestUser: "Guest User", editProfile: "Edit Profile",
+                createAccount: "Create Account", continue: "Continue", continueAsGuest: "Continue as Guest",
+                fullName: "Full Name", email: "Email", personalizeExperience: "Personalize your experience",
+                language: "Language", darkMode: "Dark Mode", notifications: "Notifications",
+                paymentMethods: "Payment Methods", accessibility: "Accessibility",
+                customizeExperience: "Customize your experience", largeText: "Large Text",
+                clearAllData: "Clear All Data", restaurants: "Restaurants", scan: "Scan",
+                orders: "Orders", selectTable: "Select Table", cancel: "Cancel",
+                checkout: "Checkout", items: "items", tapToReview: "Tap to review",
+                proceedToCheckout: "Proceed to Checkout", callWaiter: "Waiter",
+                ingredients: "Ingredients", allergens: "Allergens", dietaryInfo: "Dietary Information",
+                selectLanguage: "Select Language", languageSubtext: "Choose your preferred language to continue",
+                vegetarian: "Vegetarian", vegan: "Vegan", glutenFree: "Gluten Free", spicy: "Spicy",
+                dairyFree: "Dairy Free", nutFree: "Nut Free", containsNuts: "Contains Nuts",
+                containsGluten: "Contains Gluten", containsDairy: "Contains Dairy",
+                diningMode: "Dining Mode", dineIn: "Dine-in", preOrder: "Pre-order", takeout: "Takeout",
+                selectDiningMode: "Select Dining Mode", tableNumber: "Table Number",
+                pickupTime: "Pickup Time", asap: "As soon as possible",
+                orderSummary: "Order Summary", paymentMethod: "Payment Method",
+                placeOrder: "Place Order", table: "Table", change: "Change",
+                viewDetails: "View Details", add: "Add", remove: "Remove",
+                waiterCalled: "Waiter called to Table",
+                cashNotAvailable: "Cash payment only available for dine-in",
+                selectDineInOrOther: "How would you like to enjoy your meal?",
+                verifyEmail: "Verify Email", codeSent: "We sent a 6-digit code to",
+                enterCode: "Enter Verification Code", verify: "Verify", resendCode: "Resend Code",
+                back: "Back", verified: "Verified",
+                scanToPay: "Scan to Pay", scanQRWithPhone: "Scan this QR code with your phone to complete payment",
+                done: "Done", applePay: "Apple Pay",
+                rateYourExperience: "Rate Your Experience", submitReview: "Submit Review", skip: "Skip",
+                reviews: "Reviews", seeAll: "See All", allReviews: "All Reviews",
+                yourOrderIsReady: "Your order is ready for pickup!", orderReady: "Order Ready",
+                orderStatusUpdate: "Order Status Update", markAsRead: "Mark as read",
+                favorites: "Favorites", myFavorites: "My Favorites", noFavorites: "No favorites yet",
+                favoritesSubtext: "Save your favorite places to find them easily when you travel",
+                active: "Active", history: "History", orderHistory: "Order History",
+                inexpensive: "Inexpensive", moderate: "Moderate", expensive: "Expensive", veryExpensive: "Very Expensive",
+                getDirections: "Get Directions",
+                // Restaurant translations
+                "Campus Cafe": "Campus Cafe", "Dragon Wok": "Dragon Wok",
+                // Food translations
+                "Breakfast Sandwich": "Breakfast Sandwich", "Avocado Toast": "Avocado Toast", "Coffee": "Coffee",
+                "Kung Pao Chicken": "Kung Pao Chicken", "Spring Rolls": "Spring Rolls", "Mapo Tofu": "Mapo Tofu",
+                // Ingredient translations
+                "ing_c1": "Eggs, bacon, cheddar cheese, english muffin, butter",
+                "ing_c2": "Sourdough bread, avocado, cherry tomatoes, feta cheese, olive oil, sea salt",
+                "ing_c3": "Arabica coffee beans, water",
+                "ing_d1": "Chicken, peanuts, chili peppers, soy sauce, garlic, ginger, scallions",
+                "ing_d2": "Cabbage, carrots, mushrooms, glass noodles, spring roll wrapper",
+                "ing_d3": "Tofu, doubanjiang, chili oil, Sichuan peppercorns, garlic, ginger"
+            },
+            es: {
+                appName: "Joyas Ocultas", nearCampus: "Cerca del Campus", noRestaurants: "No se encontraron restaurantes",
+                loadDemoText: "Cargue datos de demostración para ver cómo funciona la aplicación.",
+                loadDemo: "Cargar Datos Demo", retry: "Reintentar", searchRestaurants: "Buscar restaurantes...",
+                all: "Todos", school: "Escuela", small: "Pequeño",
+                nearby: "Cerca", detectingLocation: "Detectando ubicación...", refresh: "Actualizar",
+                location: "Ubicación", campus: "Campus", downtown: "Centro", mall: "Centro Comercial",
+                scanTableQR: "Escanear QR de Mesa", scanInstructions: "Apunte la cámara al código QR<br>para abrir el menú automáticamente",
+                myOrders: "Mis Pedidos", noOrders: "Sin pedidos aún", browseRestaurants: "Explorar Restaurantes",
+                profile: "Perfil", guestUser: "Usuario Invitado", editProfile: "Editar Perfil",
+                createAccount: "Crear Cuenta", continue: "Continuar", continueAsGuest: "Continuar como Invitado",
+                fullName: "Nombre Completo", email: "Correo Electrónico", personalizeExperience: "Personaliza tu experiencia",
+                language: "Idioma", darkMode: "Modo Oscuro", notifications: "Notificaciones",
+                paymentMethods: "Métodos de Pago", accessibility: "Accesibilidad",
+                customizeExperience: "Personaliza tu experiencia", largeText: "Texto Grande",
+                clearAllData: "Borrar Todos los Datos", restaurants: "Restaurantes", scan: "Escanear",
+                orders: "Pedidos", selectTable: "Seleccionar Mesa", cancel: "Cancelar",
+                checkout: "Pagar", items: "artículos", tapToReview: "Toca para revisar",
+                proceedToCheckout: "Proceder al Pago", callWaiter: "Mesero",
+                ingredients: "Ingredientes", allergens: "Alérgenos", dietaryInfo: "Información Dietética",
+                selectLanguage: "Seleccionar Idioma", languageSubtext: "Elige tu idioma preferido para continuar",
+                vegetarian: "Vegetariano", vegan: "Vegano", glutenFree: "Sin Gluten", spicy: "Picante",
+                dairyFree: "Sin Lácteos", nutFree: "Sin Nueces", containsNuts: "Contiene Nueces",
+                containsGluten: "Contiene Gluten", containsDairy: "Contiene Lácteos",
+                diningMode: "Modo de Comida", dineIn: "En el Local", preOrder: "Pedido Anticipado", takeout: "Para Llevar",
+                selectDiningMode: "Seleccionar Modo", tableNumber: "Número de Mesa",
+                pickupTime: "Hora de Recogida", asap: "Lo antes posible",
+                orderSummary: "Resumen del Pedido", paymentMethod: "Método de Pago",
+                placeOrder: "Realizar Pedido", table: "Mesa", change: "Cambiar",
+                viewDetails: "Ver Detalles", add: "Agregar", remove: "Eliminar",
+                waiterCalled: "Mesero llamado a la Mesa",
+                cashNotAvailable: "Pago en efectivo solo disponible para comer en el local",
+                selectDineInOrOther: "¿Cómo te gustaría disfrutar tu comida?",
+                verifyEmail: "Verificar Correo", codeSent: "Enviamos un código de 6 dígitos a",
+                enterCode: "Ingrese el Código de Verificación", verify: "Verificar", resendCode: "Reenviar Código",
+                back: "Atrás", verified: "Verificado",
+                scanToPay: "Escanear para Pagar", scanQRWithPhone: "Escanee este código QR con su teléfono para completar el pago",
+                done: "Hecho", applePay: "Apple Pay",
+                rateYourExperience: "Califica tu Experiencia", submitReview: "Enviar Reseña", skip: "Omitir",
+                reviews: "Reseñas", seeAll: "Ver Todas", allReviews: "Todas las Reseñas",
+                yourOrderIsReady: "¡Tu pedido está listo para recoger!", orderReady: "Pedido Listo",
+                orderStatusUpdate: "Actualización de Estado", markAsRead: "Marcar como leído",
+                favorites: "Favoritos", myFavorites: "Mis Favoritos", noFavorites: "Sin favoritos aún",
+                favoritesSubtext: "Guarda tus lugares favoritos para encontrarlos fácilmente cuando viajes",
+                active: "Activos", history: "Historial", orderHistory: "Historial de Pedidos",
+                inexpensive: "Económico", moderate: "Moderado", expensive: "Caro", veryExpensive: "Muy Caro",
+                getDirections: "Cómo Llegar"
+            },
+            zh: {
+                appName: "隐藏的宝石", nearCampus: "校园附近", noRestaurants: "未找到餐厅",
+                loadDemoText: "加载演示数据以查看应用程序的工作原理。",
+                loadDemo: "加载演示数据", retry: "重试", searchRestaurants: "搜索餐厅...",
+                all: "全部", school: "学校", small: "小型",
+                nearby: "附近", detectingLocation: "检测位置中...", refresh: "刷新",
+                location: "位置", campus: "校园", downtown: "市中心", mall: "商场",
+                scanTableQR: "扫描桌码", scanInstructions: "将摄像头对准桌面的二维码<br>自动打开菜单",
+                myOrders: "我的订单", noOrders: "暂无订单", browseRestaurants: "浏览餐厅",
+                profile: "个人资料", guestUser: "访客用户", editProfile: "编辑资料",
+                createAccount: "创建账户", continue: "继续", continueAsGuest: "继续作为访客",
+                fullName: "姓名", email: "电子邮件", personalizeExperience: "个性化您的体验",
+                language: "语言", darkMode: "深色模式", notifications: "通知",
+                paymentMethods: "支付方式", accessibility: "辅助功能",
+                customizeExperience: "自定义您的体验", largeText: "大字体",
+                clearAllData: "清除所有数据", restaurants: "餐厅", scan: "扫描",
+                orders: "订单", selectTable: "选择桌号", cancel: "取消",
+                checkout: "结账", items: "件商品", tapToReview: "点击查看",
+                proceedToCheckout: "去结账", callWaiter: "服务员",
+                ingredients: "配料", allergens: "过敏原", dietaryInfo: "饮食信息",
+                selectLanguage: "选择语言", languageSubtext: "选择您喜欢的语言以继续",
+                vegetarian: "素食", vegan: "纯素", glutenFree: "无麸质", spicy: "辣",
+                dairyFree: "无乳制品", nutFree: "无坚果", containsNuts: "含坚果",
+                containsGluten: "含麸质", containsDairy: "含乳制品",
+                diningMode: "用餐方式", dineIn: "堂食", preOrder: "预订", takeout: "外带",
+                selectDiningMode: "选择用餐方式", tableNumber: "桌号",
+                pickupTime: "取餐时间", asap: "尽快",
+                orderSummary: "订单摘要", paymentMethod: "支付方式",
+                placeOrder: "下单", table: "桌", change: "更改",
+                viewDetails: "查看详情", add: "添加", remove: "删除",
+                waiterCalled: "已呼叫服务员",
+                cashNotAvailable: "现金支付仅适用于堂食",
+                selectDineInOrOther: "您想如何享用您的美食？",
+                verifyEmail: "验证邮箱", codeSent: "我们已向以下地址发送了6位验证码",
+                enterCode: "输入验证码", verify: "验证", resendCode: "重新发送",
+                back: "返回", verified: "已验证",
+                scanToPay: "扫码支付", scanQRWithPhone: "使用手机扫描此二维码完成支付",
+                done: "完成", applePay: "Apple Pay",
+                rateYourExperience: "评价您的体验", submitReview: "提交评价", skip: "跳过",
+                reviews: "评价", seeAll: "查看全部", allReviews: "全部评价",
+                yourOrderIsReady: "您的订单已准备好取餐！", orderReady: "订单已就绪",
+                orderStatusUpdate: "订单状态更新", markAsRead: "标记为已读",
+                favorites: "收藏", myFavorites: "我的收藏", noFavorites: "暂无收藏",
+                favoritesSubtext: "保存您喜欢的餐厅，旅行时轻松找到",
+                active: "进行中", history: "历史", orderHistory: "订单历史",
+                inexpensive: "便宜", moderate: "适中", expensive: "贵", veryExpensive: "很贵",
+                getDirections: "获取路线"
+            }
+        };
+
+        const availableLanguages = [
+            { code: 'en', name: 'English', native: 'English' },
+            { code: 'es', name: 'Spanish', native: 'Español' },
+            { code: 'zh', name: 'Chinese', native: '中文' },
+            { code: 'fr', name: 'French', native: 'Français' },
+            { code: 'ar', name: 'Arabic', native: 'العربية' },
+            { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+            { code: 'de', name: 'German', native: 'Deutsch' },
+            { code: 'ja', name: 'Japanese', native: '日本語' },
+            { code: 'ko', name: 'Korean', native: '한국어' },
+            { code: 'pt', name: 'Portuguese', native: 'Português' },
+            { code: 'ru', name: 'Russian', native: 'Русский' },
+            { code: 'it', name: 'Italian', native: 'Italiano' }
+        ];
+
+        // STATE
+        let currentRestaurant = null;
+        let currentTable = null;
+        let cart = [];
+        let currentPromo = null;
+        let selectedPayment = null;
+        let html5QrcodeScanner = null;
+        let currentFilter = { type: 'all', location: 'all', search: '' };
+        let currentLanguage = localStorage.getItem('hg-language') || 'en';
+        let diningMode = null;
+        let isTableFromQR = false;
+        let userAccount = JSON.parse(localStorage.getItem('hg-user')) || null;
+        let pendingVerificationCode = null;
+        let tempAccountData = null;
+        let notifications = JSON.parse(localStorage.getItem('hg-notifications')) || [];
+        let userLocation = null;
+        let currentRating = 0;
+        let orderToRate = null;
+        let favorites = JSON.parse(localStorage.getItem('hg-favorites') || '[]');
+        let currentOrdersView = 'active'; // 'active' or 'history'
+       
+        const bc = new BroadcastChannel('hidden_gems_sync');
+
+        // Initialize
+        window.onload = () => {
+            checkDataAndInit();
+            loadTheme();
+            loadOrders();
+            setLanguage(currentLanguage, false);
+            checkFirstVisit();
+            updateNotificationBadge();
+            startNotificationSimulation();
+            updateFavoritesCount();
+            
+            // Request location on load
+            requestLocation();
+        };
+
+        function checkFirstVisit() {
+            if (!userAccount && !localStorage.getItem('hg-language')) {
+                if (!window.pendingQRData) {
+                    showAccountModal();
+                }
+            } else if (userAccount) {
+                updateProfileDisplay();
+            }
+        }
+
+        function requestLocation() {
+            const locationDisplay = document.getElementById('current-location-display');
+            
+            if ("geolocation" in navigator) {
+                locationDisplay.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + t('detectingLocation');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        locationDisplay.innerHTML = '<i class="fas fa-check-circle text-green-500 mr-2"></i>' + t('locationFound');
+                        
+                        // Clear the success message after 2 seconds and show generic
+                        setTimeout(() => {
+                            locationDisplay.textContent = t('nearCampus');
+                        }, 2000);
+                        
+                        renderRestaurants(); // Re-render with distances
+                    },
+                    (error) => {
+                        console.error("Location error:", error);
+                        locationDisplay.innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>' + t('nearCampus');
+                        
+                        // Use default demo location (NYC)
+                        userLocation = { lat: 40.7128, lng: -74.0060 };
+                        renderRestaurants();
+                    },
+                    { timeout: 10000, enableHighAccuracy: true }
+                );
+            } else {
+                locationDisplay.textContent = t('nearCampus');
+                userLocation = { lat: 40.7128, lng: -74.0060 };
+            }
+        }
+
+        function refreshLocation() {
+            document.getElementById('current-location-display').innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + t('detectingLocation');
+            requestLocation();
+        }
+
+        // Calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return (R * c).toFixed(1);
+        }
+
+        // Open directions in native maps app
+        function openDirections() {
+            if (!currentRestaurant) return;
+            
+            let url;
+            if (currentRestaurant.coordinates) {
+                // Use coordinates for precise directions
+                const { lat, lng } = currentRestaurant.coordinates;
+                // Universal map link that works on iOS and Android
+                url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+            } else if (currentRestaurant.address) {
+                // Fallback to address search
+                const address = encodeURIComponent(currentRestaurant.address);
+                url = `https://www.google.com/maps/search/?api=1&query=${address}`;
+            } else {
+                alert('Location not available for this restaurant');
+                return;
+            }
+            
+            window.open(url, '_blank');
+        }
+
+        // FAVORITES SYSTEM
+        function toggleFavorite(restaurantId) {
+            const index = favorites.indexOf(restaurantId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast(t('removedFromFavorites') || 'Removed from favorites');
+            } else {
+                favorites.push(restaurantId);
+                showToast(t('addedToFavorites') || 'Added to favorites');
+            }
+            localStorage.setItem('hg-favorites', JSON.stringify(favorites));
+            updateFavoriteButtons(restaurantId);
+            updateFavoritesCount();
+            
+            if (!document.getElementById('view-favorites').classList.contains('hidden')) {
+                renderFavorites();
+            }
+            
+            if (currentFilter.type === 'favorites') {
+                renderRestaurants();
+            }
+        }
+
+        function toggleCurrentFavorite() {
+            if (!currentRestaurant) return;
+            toggleFavorite(currentRestaurant.id);
+        }
+
+        function isFavorite(restaurantId) {
+            return favorites.includes(restaurantId);
+        }
+
+        function updateFavoriteButtons(restaurantId) {
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                if (btn.dataset.restId === restaurantId || 
+                    (currentRestaurant && currentRestaurant.id === restaurantId)) {
+                    if (isFavorite(restaurantId)) {
+                        btn.classList.add('active');
+                        btn.classList.remove('text-gray-400');
+                    } else {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-400');
+                    }
+                }
+            });
+        }
+
+        function updateFavoritesCount() {
+            const count = favorites.length;
+            const display = document.getElementById('favorites-count-display');
+            if (display) {
+                display.textContent = count === 1 ? '1 saved place' : `${count} saved places`;
+            }
+        }
+
+        function renderFavorites() {
+            const container = document.getElementById('favorites-list');
+            const restaurants = JSON.parse(localStorage.getItem('hg-restaurants') || '[]');
+            const favoriteRestaurants = restaurants.filter(r => favorites.includes(r.id));
+            
+            if (favoriteRestaurants.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-muted">
+                        <div class="w-20 h-20 bg-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-heart text-2xl text-gray-300"></i>
+                        </div>
+                        <p data-i18n="noFavorites">${t('noFavorites')}</p>
+                        <p class="text-sm mt-2 mb-4" data-i18n="favoritesSubtext">${t('favoritesSubtext')}</p>
+                        <button onclick="showView('view-restaurants')" class="px-6 py-2 bg-primary text-white rounded-full font-medium" data-i18n="browseRestaurants">${t('browseRestaurants')}</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = favoriteRestaurants.map(r => {
+                const translatedName = t(r.name);
+                const distanceText = r.distance ? `<span class="distance-badge ml-2">${r.distance} mi</span>` : '';
+                return `
+                <div class="restaurant-card card rounded-2xl border overflow-hidden cursor-pointer relative">
+                    <button onclick="event.stopPropagation(); toggleFavorite('${r.id}')" 
+                        class="favorite-btn active absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full flex items-center justify-center shadow-lg text-red-500">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <div onclick="selectRestaurantById('${r.id}')">
+                        <div class="h-40 bg-gray-200 relative">
+                            <img src="${r.image}" class="w-full h-full object-cover" alt="${translatedName}">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="px-2 py-1 bg-black/70 text-white rounded-lg text-xs font-bold">
+                                    ${r.time}
+                                </span>
+                                ${distanceText}
+                            </div>
+                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-primary text-white rounded-lg text-xs font-bold capitalize">
+                                ${r.type}
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-xl">${translatedName}</h3>
+                                <div class="flex items-center gap-1 text-sm">
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <span class="font-bold">${r.rating}</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-muted">${r.cuisine}</p>
+                                <span class="text-xs font-semibold text-green-600 price-indicator">${'$'.repeat(r.priceRange || 2)}</span>
+                            </div>
+                            <p class="text-xs text-muted truncate">📍 ${r.location} • ${r.address}</p>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function selectRestaurantById(restaurantId) {
+            const restaurants = JSON.parse(localStorage.getItem('hg-restaurants') || '[]');
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (restaurant) {
+                selectRestaurant(restaurant);
+            }
+        }
+
+        // NOTIFICATION SYSTEM
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            panel.classList.remove('hidden');
+            renderNotifications();
+        }
+
+        function closeNotifications() {
+            document.getElementById('notifications-panel').classList.add('hidden');
+            notifications.forEach(n => n.read = true);
+            localStorage.setItem('hg-notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notifications-list');
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-12 text-muted">
+                        <i class="fas fa-bell-slash text-4xl mb-4 opacity-50"></i>
+                        <p data-i18n="noNotifications">No notifications yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = notifications.slice().reverse().map((notif, idx) => `
+                <div class="card p-4 rounded-2xl border ${notif.read ? 'opacity-60' : 'border-primary/30 bg-primary/5'} relative">
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-full ${notif.type === 'order' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'} flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-${notif.type === 'order' ? 'utensils' : 'info'}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm">${notif.title}</h4>
+                            <p class="text-sm text-muted mt-1">${notif.message}</p>
+                            <p class="text-xs text-muted mt-2">${new Date(notif.date).toLocaleTimeString()}</p>
+                        </div>
+                    </div>
+                    ${!notif.read ? `
+                    <button onclick="markNotificationRead(${notifications.length - 1 - idx})" class="absolute top-2 right-2 text-xs text-primary font-medium" data-i18n="markAsRead">
+                        Mark as read
+                    </button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function markNotificationRead(index) {
+            notifications[index].read = true;
+            localStorage.setItem('hg-notifications', JSON.stringify(notifications));
+            renderNotifications();
+            updateNotificationBadge();
+        }
+
+        function addNotification(title, message, type = 'info') {
+            notifications.push({
+                title,
+                message,
+                type,
+                date: new Date().toISOString(),
+                read: false
+            });
+            localStorage.setItem('hg-notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+            showToast(message);
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badges = document.querySelectorAll('#notification-badge, #nav-notification-badge');
+            badges.forEach(badge => {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+
+        function startNotificationSimulation() {
+            setInterval(() => {
+                let orders = JSON.parse(localStorage.getItem('hg-orders') || '[]');
+                let updated = false;
+                
+                orders.forEach(order => {
+                    if ((order.diningMode === 'takeout' || order.diningMode === 'pre-order') && 
+                        order.status === 'fired' && 
+                        (new Date() - new Date(order.date)) > 30000) {
+                        
+                        order.status = 'ready';
+                        updated = true;
+                        
+                        const title = translations[currentLanguage].orderReady || 'Order Ready';
+                        const message = `${translations[currentLanguage].yourOrderIsReady || 'Your order from'} ${t(order.restaurantName)} ${translations[currentLanguage].isReady || 'is ready for pickup!'}`;
+                        addNotification(title, message, 'order');
+                        
+                        setTimeout(() => {
+                            showRatingModal(order);
+                        }, 2000);
+                    }
+                });
+                
+                if (updated) {
+                    localStorage.setItem('hg-orders', JSON.stringify(orders));
+                    loadOrders();
+                }
+            }, 10000);
+        }
+
+        // RATING SYSTEM
+        function showRatingModal(order) {
+            orderToRate = order;
+            document.getElementById('rating-restaurant-name').textContent = t(order.restaurantName);
+            document.getElementById('rating-modal').classList.remove('hidden');
+            
+            currentRating = 0;
+            updateStarDisplay();
+        }
+
+        function closeRatingModal() {
+            document.getElementById('rating-modal').classList.add('hidden');
+            orderToRate = null;
+        }
+
+        function updateStarDisplay() {
+            document.querySelectorAll('#star-container i').forEach((star, idx) => {
+                if (idx < currentRating) {
+                    star.classList.remove('empty');
+                } else {
+                    star.classList.add('empty');
+                }
+            });
+        }
+
+        document.querySelectorAll('#star-container i').forEach((star, idx) => {
+            star.addEventListener('click', () => {
+                currentRating = idx + 1;
+                updateStarDisplay();
+            });
+        });
+
+        function submitRating() {
+            if (currentRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            const review = {
+                orderId: orderToRate.id,
+                restaurantId: orderToRate.restaurantId,
+                rating: currentRating,
+                comment: document.getElementById('review-text').value,
+                date: new Date().toISOString(),
+                user: userAccount ? userAccount.name : 'Guest'
+            };
+            
+            let reviews = JSON.parse(localStorage.getItem('hg-reviews') || '[]');
+            reviews.push(review);
+            localStorage.setItem('hg-reviews', JSON.stringify(reviews));
+            
+            let orders = JSON.parse(localStorage.getItem('hg-orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === orderToRate.id);
+            if (orderIndex > -1) {
+                orders[orderIndex].status = 'completed';
+                orders[orderIndex].rated = true;
+                localStorage.setItem('hg-orders', JSON.stringify(orders));
+                loadOrders();
+            }
+            
+            updateRestaurantRating(orderToRate.restaurantId);
+            
+            closeRatingModal();
+            showToast('Thank you for your feedback!');
+        }
+
+        function updateRestaurantRating(restaurantId) {
+            let reviews = JSON.parse(localStorage.getItem('hg-reviews') || '[]');
+            const restaurantReviews = reviews.filter(r => r.restaurantId === restaurantId);
+            
+            if (restaurantReviews.length > 0) {
+                const avg = restaurantReviews.reduce((sum, r) => sum + r.rating, 0) / restaurantReviews.length;
+                
+                let restaurants = JSON.parse(localStorage.getItem('hg-restaurants') || '[]');
+                const idx = restaurants.findIndex(r => r.id === restaurantId);
+                if (idx > -1) {
+                    restaurants[idx].rating = avg.toFixed(1);
+                    restaurants[idx].reviewCount = restaurantReviews.length;
+                    localStorage.setItem('hg-restaurants', JSON.stringify(restaurants));
+                    
+                    if (currentRestaurant && currentRestaurant.id === restaurantId) {
+                        document.getElementById('restaurant-rating-display').textContent = avg.toFixed(1);
+                        loadReviews(restaurantId);
+                    }
+                }
+            }
+        }
+
+        function loadReviews(restaurantId) {
+            let reviews = JSON.parse(localStorage.getItem('hg-reviews') || '[]');
+            const restaurantReviews = reviews.filter(r => r.restaurantId === restaurantId).slice(-3);
+            
+            const container = document.getElementById('reviews-preview');
+            if (restaurantReviews.length === 0) {
+                container.innerHTML = '<p class="text-sm text-muted italic">No reviews yet</p>';
+                return;
+            }
+            
+            container.innerHTML = restaurantReviews.map(r => `
+                <div class="bg-subtle rounded-xl p-3">
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="flex text-yellow-500 text-xs">
+                            ${Array(5).fill(0).map((_, i) => 
+                                `<i class="fas fa-star${i < r.rating ? '' : ' text-gray-300'}"></i>`
+                            ).join('')}
+                        </div>
+                        <span class="text-xs text-muted">${new Date(r.date).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-sm font-medium">${r.user}</p>
+                    ${r.comment ? `<p class="text-sm text-muted mt-1 line-clamp-2">${r.comment}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function showAllReviews() {
+            if (!currentRestaurant) return;
+            
+            let reviews = JSON.parse(localStorage.getItem('hg-reviews') || '[]');
+            const restaurantReviews = reviews.filter(r => r.restaurantId === currentRestaurant.id);
+            
+            const list = document.getElementById('all-reviews-list');
+            if (restaurantReviews.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-8">No reviews yet</p>';
+            } else {
+                list.innerHTML = restaurantReviews.slice().reverse().map(r => `
+                    <div class="border-b border-current border-opacity-10 pb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="flex text-yellow-500">
+                                ${Array(5).fill(0).map((_, i) => 
+                                    `<i class="fas fa-star${i < r.rating ? '' : ' text-gray-300'} text-sm"></i>`
+                                ).join('')}
+                            </div>
+                            <span class="text-xs text-muted">${new Date(r.date).toLocaleDateString()}</span>
+                        </div>
+                        <p class="font-bold text-sm">${r.user}</p>
+                        ${r.comment ? `<p class="text-sm text-muted mt-1">${r.comment}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('reviews-modal').classList.remove('hidden');
+        }
+
+        function closeReviewsModal() {
+            document.getElementById('reviews-modal').classList.add('hidden');
+        }
+
+        function showAccountModal() {
+            document.getElementById('account-modal').classList.remove('hidden');
+            document.getElementById('account-language').value = currentLanguage;
+        }
+
+        function sendVerificationCode() {
+            const name = document.getElementById('account-name').value;
+            const email = document.getElementById('account-email').value;
+            const lang = document.getElementById('account-language').value;
+            
+            if (!name || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Please enter a valid email');
+                return;
+            }
+            
+            tempAccountData = { name, email, lang };
+            pendingVerificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            console.log(`Verification code for ${email}: ${pendingVerificationCode}`);
+            alert(`Verification code sent to ${email}!\n(Demo code: ${pendingVerificationCode})`);
+            
+            document.getElementById('verification-email-display').textContent = email;
+            document.getElementById('account-modal').classList.add('hidden');
+            document.getElementById('verification-modal').classList.remove('hidden');
+            document.getElementById('verification-code').value = '';
+        }
+
+        function verifyCode() {
+            const enteredCode = document.getElementById('verification-code').value;
+            
+            if (enteredCode === pendingVerificationCode) {
+                userAccount = {
+                    name: tempAccountData.name,
+                    email: tempAccountData.email,
+                    language: tempAccountData.lang,
+                    verified: true,
+                    createdAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('hg-user', JSON.stringify(userAccount));
+                setLanguage(tempAccountData.lang, true);
+                updateProfileDisplay();
+                
+                document.getElementById('verification-modal').classList.add('hidden');
+                showToast('Account created successfully!');
+                
+                tempAccountData = null;
+                pendingVerificationCode = null;
+            } else {
+                alert('Invalid code. Please try again.');
+            }
+        }
+
+        function resendCode() {
+            if (tempAccountData) {
+                pendingVerificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+                console.log(`New verification code for ${tempAccountData.email}: ${pendingVerificationCode}`);
+                alert(`New code sent! (Demo code: ${pendingVerificationCode})`);
+            }
+        }
+
+        function backToAccountCreation() {
+            document.getElementById('verification-modal').classList.add('hidden');
+            document.getElementById('account-modal').classList.remove('hidden');
+        }
+
+        function skipAccountCreation() {
+            const lang = document.getElementById('account-language').value;
+            setLanguage(lang, true);
+            document.getElementById('account-modal').classList.add('hidden');
+        }
+
+        function updateProfileDisplay() {
+            if (userAccount) {
+                document.getElementById('profile-name').textContent = userAccount.name;
+                document.getElementById('profile-email').textContent = userAccount.email;
+                document.getElementById('profile-initials').textContent = userAccount.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('verification-badge').classList.remove('hidden');
+                document.getElementById('create-account-btn').classList.add('hidden');
+            }
+        }
+
+        function editProfile() {
+            if (userAccount) {
+                document.getElementById('account-name').value = userAccount.name;
+                document.getElementById('account-email').value = userAccount.email;
+                document.getElementById('account-language').value = currentLanguage;
+                showAccountModal();
+            } else {
+                showAccountModal();
+            }
+        }
+
+        function checkDataAndInit() {
+            const restaurants = localStorage.getItem('hg-restaurants');
+            if (!restaurants || JSON.parse(restaurants).length === 0) {
+                document.getElementById('no-data-warning').classList.remove('hidden');
+            } else {
+                document.getElementById('no-data-warning').classList.add('hidden');
+                renderRestaurants();
+            }
+        }
+
+        function initDemoData() {
+            const demoRestaurants = [
+                {
+                    id: 'rest1',
+                    name: 'Campus Cafe',
+                    type: 'school',
+                    location: 'Campus',
+                    address: 'Student Center, Building A, 123 University Ave',
+                    cuisine: 'American • Comfort Food',
+                    rating: 4.8,
+                    reviewCount: 124,
+                    time: '15-25 min',
+                    priceRange: 2,
+                    priceDescription: 'moderate',
+                    image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&q=80',
+                    coordinates: { lat: 40.7128, lng: -74.0060 },
+                    settings: {
+                        categories: ['Breakfast', 'Lunch', 'Drinks'],
+                        paymentMethods: ['cash', 'card', 'applepay', 'venmo'],
+                        paymentQR: {
+                            wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechatpayment_rest1',
+                            alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipaypayment_rest1'
+                        }
+                    }
+                },
+                {
+                    id: 'rest2',
+                    name: 'Dragon Wok',
+                    type: 'small',
+                    location: 'Downtown',
+                    address: '123 Main Street, New York, NY 10001',
+                    cuisine: 'Chinese • Asian Fusion',
+                    rating: 4.6,
+                    reviewCount: 89,
+                    time: '20-35 min',
+                    priceRange: 2,
+                    priceDescription: 'moderate',
+                    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=80',
+                    coordinates: { lat: 40.7200, lng: -74.0100 },
+                    settings: {
+                        categories: ['Appetizers', 'Entrees', 'Noodles'],
+                        paymentMethods: ['card', 'applepay', 'wechat', 'alipay'],
+                        paymentQR: {
+                            wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechatpayment_rest2',
+                            alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipaypayment_rest2'
+                        }
+                    }
+                }
+            ];
+
+            const menus = {
+                rest1: [
+                    { id: 'c1', name: 'Breakfast Sandwich', price: 6.50, category: 'Breakfast', tags: ['Popular'], quantity: 20, image: 'https://images.unsplash.com/photo-1525351484163-7529414395d8?w=400&q=80', ingredients: 'ing_c1', allergens: ['Dairy', 'Eggs', 'Gluten'], dietary: [] },
+                    { id: 'c2', name: 'Avocado Toast', price: 8.00, category: 'Breakfast', tags: ['Vegetarian'], quantity: 15, image: 'https://images.unsplash.com/photo-1588137372308-15f75323ca8d?w=400&q=80', ingredients: 'ing_c2', allergens: ['Dairy', 'Gluten'], dietary: ['vegetarian'] },
+                    { id: 'c3', name: 'Coffee', price: 3.00, category: 'Drinks', tags: [], quantity: 50, image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80', ingredients: 'ing_c3', allergens: [], dietary: ['vegan', 'gluten-free'] },
+                ],
+                rest2: [
+                    { id: 'd1', name: 'Kung Pao Chicken', price: 12.00, category: 'Entrees', tags: ['Spicy'], quantity: 15, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400&q=80', ingredients: 'ing_d1', allergens: ['Peanuts', 'Soy', 'Gluten'], dietary: ['dairy-free'] },
+                    { id: 'd2', name: 'Spring Rolls', price: 6.00, category: 'Appetizers', tags: ['Vegetarian'], quantity: 30, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&q=80', ingredients: 'ing_d2', allergens: ['Gluten', 'Soy'], dietary: ['vegetarian', 'vegan'] },
+                    { id: 'd3', name: 'Mapo Tofu', price: 11.00, category: 'Entrees', tags: ['Spicy', 'Vegetarian'], quantity: 12, image: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=400&q=80', ingredients: 'ing_d3', allergens: ['Soy', 'Gluten'], dietary: ['vegetarian', 'vegan', 'dairy-free'] },
+                ]
+            };
+
+            localStorage.setItem('hg-restaurants', JSON.stringify(demoRestaurants));
+            Object.entries(menus).forEach(([id, menu]) => {
+                localStorage.setItem(`hg-menu-${id}`, JSON.stringify(menu));
+            });
+            localStorage.setItem('hg-orders', JSON.stringify([]));
+            localStorage.setItem('hg-reviews', JSON.stringify([]));
+           
+            document.getElementById('no-data-warning').classList.add('hidden');
+            renderRestaurants();
+        }
+
+        function t(key) {
+            if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                return translations[currentLanguage][key];
+            }
+            if (translations['en'][key]) {
+                return translations['en'][key];
+            }
+            return key;
+        }
+
+        function setLanguage(langCode, save = true) {
+            currentLanguage = langCode;
+            if (save) {
+                localStorage.setItem('hg-language', langCode);
+            }
+            
+            const lang = availableLanguages.find(l => l.code === langCode);
+            document.getElementById('current-language-display').textContent = `${lang.name} (${lang.native})`;
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    el.textContent = translations[currentLanguage][key];
+                } else if (translations['en'][key]) {
+                    el.textContent = translations['en'][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    el.placeholder = translations[currentLanguage][key];
+                }
+            });
+
+            if (currentRestaurant && !document.getElementById('view-menu').classList.contains('hidden')) {
+                loadMenuItems();
+                loadReviews(currentRestaurant.id);
+            }
+            if (!document.getElementById('view-restaurants').classList.contains('hidden')) {
+                renderRestaurants();
+            }
+        }
+
+        function showLanguageSelector() {
+            const modal = document.getElementById('language-modal');
+            modal.classList.remove('hidden');
+            renderLanguageList();
+        }
+
+        function renderLanguageList(filter = '') {
+            const list = document.getElementById('language-list');
+            list.innerHTML = '';
+            
+            const filtered = availableLanguages.filter(l => 
+                l.name.toLowerCase().includes(filter.toLowerCase()) || 
+                l.native.includes(filter)
+            );
+            
+            filtered.forEach(lang => {
+                const btn = document.createElement('button');
+                btn.className = `lang-option w-full text-left p-3 rounded-xl transition-colors flex justify-between items-center ${lang.code === currentLanguage ? 'bg-primary/10 text-primary font-bold' : ''}`;
+                btn.innerHTML = `
+                    <span>${lang.name} (${lang.native})</span>
+                    ${lang.code === currentLanguage ? '<i class="fas fa-check"></i>' : ''}
+                `;
+                btn.onclick = () => {
+                    setLanguage(lang.code);
+                    document.getElementById('language-modal').classList.add('hidden');
+                };
+                list.appendChild(btn);
+            });
+        }
+
+        function filterLanguages() {
+            const search = document.getElementById('language-search').value;
+            renderLanguageList(search);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('hg-theme') || 'light';
+            document.documentElement.className = savedTheme;
+            document.getElementById('dark-mode-toggle').checked = savedTheme === 'dark';
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.getElementById('dark-mode-toggle').checked;
+            document.documentElement.className = isDark ? 'dark' : 'light';
+            localStorage.setItem('hg-theme', isDark ? 'dark' : 'light');
+        }
+
+        function toggleLargeText() {
+            document.body.classList.toggle('text-lg');
+        }
+
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+           
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.remove('active', 'text-primary');
+                n.classList.add('text-muted');
+            });
+           
+            const activeNav = document.querySelector(`[data-view="${viewId}"]`);
+            if (activeNav) {
+                activeNav.classList.add('active', 'text-primary');
+                activeNav.classList.remove('text-muted');
+            }
+
+            if (viewId === 'view-favorites') {
+                renderFavorites();
+            }
+
+            if (viewId !== 'view-menu') {
+                document.getElementById('floating-cart').classList.add('hidden');
+                document.getElementById('call-waiter-btn').classList.add('hidden');
+            } else if (cart.length > 0) {
+                document.getElementById('floating-cart').classList.remove('hidden');
+                if (isTableFromQR && currentTable && diningMode === 'dine-in') {
+                    document.getElementById('call-waiter-btn').classList.remove('hidden');
+                }
+            }
+        }
+
+        function showSettings() {
+            showView('view-profile');
+        }
+
+        function renderRestaurants() {
+            const restaurants = JSON.parse(localStorage.getItem('hg-restaurants') || '[]');
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+
+            let filtered = restaurants.filter(r => {
+                if (currentFilter.type === 'favorites') {
+                    return favorites.includes(r.id);
+                }
+                const matchType = currentFilter.type === 'all' || currentFilter.type === 'nearby' || r.type === currentFilter.type;
+                const matchLoc = currentFilter.location === 'all' || r.location === currentFilter.location;
+                const matchSearch = !currentFilter.search ||
+                    r.name.toLowerCase().includes(currentFilter.search.toLowerCase()) ||
+                    r.cuisine.toLowerCase().includes(currentFilter.search.toLowerCase()) ||
+                    (r.address && r.address.toLowerCase().includes(currentFilter.search.toLowerCase()));
+                return matchLoc && matchSearch && (currentFilter.type !== 'favorites' || favorites.includes(r.id));
+            });
+
+            if (userLocation) {
+                filtered = filtered.map(r => {
+                    if (r.coordinates) {
+                        r.distance = parseFloat(calculateDistance(
+                            userLocation.lat, userLocation.lng,
+                            r.coordinates.lat, r.coordinates.lng
+                        ));
+                    } else {
+                        r.distance = null;
+                    }
+                    return r;
+                });
+
+                if (currentFilter.type === 'nearby') {
+                    filtered = filtered.sort((a, b) => (a.distance || 999) - (b.distance || 999));
+                    filtered = filtered.filter(r => r.distance && r.distance < 5);
+                }
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center py-12 text-muted">
+                        <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                        <p data-i18n="noRestaurants">${t('noRestaurants')}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(r => {
+                const translatedName = t(r.name);
+                const priceString = '$'.repeat(r.priceRange || 2);
+                const isFav = isFavorite(r.id);
+                const card = document.createElement('div');
+                card.className = 'restaurant-card card rounded-2xl border overflow-hidden cursor-pointer relative';
+                
+                const distanceBadge = r.distance ? `<span class="distance-badge">${r.distance} mi</span>` : '';
+                
+                card.innerHTML = `
+                    <button onclick="event.stopPropagation(); toggleFavorite('${r.id}')" 
+                        class="favorite-btn ${isFav ? 'active' : 'text-gray-400'} absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 dark:bg-black/70 backdrop-blur rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <div class="h-40 bg-gray-200 relative" onclick="selectRestaurantById('${r.id}')">
+                        <img src="${r.image}" class="w-full h-full object-cover" alt="${translatedName}">
+                        <div class="absolute top-3 left-3 flex flex-col gap-2">
+                            <span class="px-2 py-1 bg-black/70 text-white rounded-lg text-xs font-bold backdrop-blur-sm">
+                                ${r.time}
+                            </span>
+                            ${distanceBadge}
+                        </div>
+                        <div class="absolute bottom-3 left-3 px-2 py-1 bg-primary text-white rounded-lg text-xs font-bold capitalize">
+                            ${r.type}
+                        </div>
+                    </div>
+                    <div class="p-4" onclick="selectRestaurantById('${r.id}')">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-xl truncate pr-8">${translatedName}</h3>
+                            <div class="flex items-center gap-1 text-sm flex-shrink-0">
+                                <i class="fas fa-star text-yellow-500"></i>
+                                <span class="font-bold">${r.rating}</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="text-sm text-muted">${r.cuisine}</p>
+                            <span class="text-xs font-semibold text-green-600 price-indicator" title="${t(r.priceDescription || 'moderate')}">${priceString}</span>
+                        </div>
+                        <p class="text-xs text-muted truncate">📍 ${r.address || r.location}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function setTypeFilter(type) {
+            currentFilter.type = type;
+            document.querySelectorAll('.filter-chip').forEach(btn => {
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active', 'bg-primary', 'text-white');
+                    btn.classList.remove('bg-subtle', 'text-muted');
+                } else {
+                    btn.classList.remove('active', 'bg-primary', 'text-white');
+                    btn.classList.add('bg-subtle', 'text-muted');
+                }
+            });
+            renderRestaurants();
+        }
+
+        function setLocationFilter(loc) {
+            currentFilter.location = loc;
+            document.querySelectorAll('.loc-chip').forEach(btn => {
+                if (btn.dataset.loc === loc) {
+                    btn.classList.add('active', 'bg-primary', 'text-white');
+                    btn.classList.remove('bg-subtle', 'text-muted');
+                } else {
+                    btn.classList.remove('active', 'bg-primary', 'text-white');
+                    btn.classList.add('bg-subtle', 'text-muted');
+                }
+            });
+            renderRestaurants();
+        }
+
+        function filterRestaurants() {
+            currentFilter.search = document.getElementById('restaurant-search').value;
+            renderRestaurants();
+        }
+
+        function selectRestaurant(restaurant) {
+            currentRestaurant = restaurant;
+            diningMode = null;
+            isTableFromQR = false;
+            currentTable = null;
+            
+            document.getElementById('menu-restaurant-name').textContent = t(restaurant.name);
+            document.getElementById('menu-restaurant-type').textContent = restaurant.type;
+            document.getElementById('menu-restaurant-location').textContent = `📍 ${restaurant.location}`;
+            document.getElementById('menu-restaurant-address').textContent = restaurant.address || '';
+            document.getElementById('menu-restaurant-img').src = restaurant.image;
+            document.getElementById('restaurant-rating-display').textContent = restaurant.rating;
+            document.getElementById('restaurant-time').textContent = restaurant.time;
+            
+            // Show distance if available
+            const distanceBadge = document.getElementById('menu-distance-badge');
+            if (restaurant.distance) {
+                distanceBadge.textContent = `${restaurant.distance} mi`;
+                distanceBadge.classList.remove('hidden');
+            } else {
+                distanceBadge.classList.add('hidden');
+            }
+            
+            const priceString = '$'.repeat(restaurant.priceRange || 2);
+            document.getElementById('restaurant-price-display').textContent = priceString;
+            
+            const favBtn = document.getElementById('menu-favorite-btn');
+            if (isFavorite(restaurant.id)) {
+                favBtn.classList.add('active');
+                favBtn.classList.remove('text-gray-400');
+            } else {
+                favBtn.classList.remove('active');
+                favBtn.classList.add('text-gray-400');
+            }
+            
+            document.getElementById('menu-table-display').classList.add('hidden');
+            document.getElementById('menu-dining-mode').textContent = t('dineIn');
+           
+            const categories = restaurant.settings.categories || ['All'];
+            const catContainer = document.getElementById('menu-categories');
+            catContainer.innerHTML = `<button onclick="filterMenuCategory('all')" class="menu-cat active px-4 py-2 bg-subtle rounded-full text-sm font-medium whitespace-nowrap">${t('all')}</button>`;
+            categories.forEach(cat => {
+                catContainer.innerHTML += `<button onclick="filterMenuCategory('${cat}')" class="menu-cat px-4 py-2 bg-subtle rounded-full text-sm font-medium whitespace-nowrap text-muted">${cat}</button>`;
+            });
+           
+            loadMenuItems();
+            loadReviews(restaurant.id);
+            showView('view-menu');
+        }
+
+        function showTableSelector() {
+            const grid = document.getElementById('table-grid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 12; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'py-3 bg-subtle rounded-xl font-bold hover:bg-primary hover:text-white transition-colors';
+                btn.textContent = i;
+                btn.onclick = () => {
+                    currentTable = i;
+                    document.getElementById('menu-table-num').textContent = i;
+                    document.getElementById('menu-table-display').classList.remove('hidden');
+                    closeTableModal();
+                    renderCheckoutContent();
+                    showView('view-checkout');
+                };
+                grid.appendChild(btn);
+            }
+            document.getElementById('table-modal').classList.remove('hidden');
+        }
+
+        function closeTableModal() {
+            document.getElementById('table-modal').classList.add('hidden');
+        }
+
+        function backToRestaurants() {
+            currentRestaurant = null;
+            currentTable = null;
+            diningMode = null;
+            isTableFromQR = false;
+            cart = [];
+            updateCartUI();
+            showView('view-restaurants');
+        }
+
+        function loadMenuItems(category = 'all') {
+            if (!currentRestaurant) return;
+           
+            const menu = JSON.parse(localStorage.getItem(`hg-menu-${currentRestaurant.id}`) || '[]');
+            const container = document.getElementById('menu-items');
+            container.innerHTML = '';
+
+            const filtered = category === 'all' ? menu : menu.filter(i => i.category === category);
+
+            filtered.forEach(item => {
+                const inCart = cart.find(c => c.id === item.id);
+                const qty = inCart ? inCart.quantity : 0;
+
+                let dietaryBadges = '';
+                if (item.dietary) {
+                    item.dietary.forEach(d => {
+                        let badgeClass = '';
+                        let icon = '';
+                        let label = t(d);
+                        switch(d) {
+                            case 'vegetarian': badgeClass = 'veg-badge'; icon = '🌱'; break;
+                            case 'vegan': badgeClass = 'vegan-badge'; icon = '🌿'; break;
+                            case 'gluten-free': badgeClass = 'gf-badge'; icon = '🌾'; break;
+                            case 'dairy-free': badgeClass = 'gf-badge'; icon = '🥛'; break;
+                            case 'nut-free': badgeClass = 'veg-badge'; icon = '🥜'; break;
+                            case 'spicy': badgeClass = 'spicy-badge'; icon = '🌶️'; break;
+                        }
+                        dietaryBadges += `<span class="dietary-badge ${badgeClass}">${icon} ${label}</span>`;
+                    });
+                }
+
+                const translatedName = t(item.name);
+                const div = document.createElement('div');
+                div.className = 'card rounded-2xl p-3 border flex gap-4';
+                div.innerHTML = `
+                    <img src="${item.image || 'https://via.placeholder.com/100'}" class="w-24 h-24 rounded-xl object-cover bg-gray-200 cursor-pointer flex-shrink-0" onclick="showFoodDetails('${item.id}')">
+                    <div class="flex-1 flex flex-col justify-between min-w-0">
+                        <div>
+                            <div class="flex justify-between items-start cursor-pointer" onclick="showFoodDetails('${item.id}')">
+                                <h4 class="font-bold text-lg truncate">${translatedName}</h4>
+                                <span class="font-bold text-primary flex-shrink-0 ml-2">$${item.price.toFixed(2)}</span>
+                            </div>
+                            <p class="text-xs text-muted mt-1">${item.tags.join(' • ')}</p>
+                            <div class="flex flex-wrap gap-1 mt-2">
+                                ${dietaryBadges}
+                            </div>
+                            <button onclick="showFoodDetails('${item.id}')" class="text-xs text-primary mt-1 underline" data-i18n="viewDetails">${t('viewDetails')}</button>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            ${item.quantity < 5 ? `<span class="text-xs text-orange-500 font-medium">Only ${item.quantity} left</span>` : '<span></span>'}
+                            ${qty > 0 ? `
+                                <div class="flex items-center gap-2 bg-subtle rounded-xl p-1 flex-shrink-0">
+                                    <button onclick="updateCartQty('${item.id}', -1)" class="w-8 h-8 bg-white dark:bg-dark-700 rounded-lg flex items-center justify-center shadow-sm">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <span class="font-bold w-4 text-center">${qty}</span>
+                                    <button onclick="updateCartQty('${item.id}', 1)" class="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button onclick="removeFromCart('${item.id}')" class="w-8 h-8 bg-red-100 text-red-600 rounded-lg flex items-center justify-center ml-1" title="${t('remove')}">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            ` : `
+                                <button onclick="addToCart('${item.id}')" class="px-6 py-2 bg-primary text-white rounded-xl font-medium text-sm hover:bg-red-700 transition-colors flex-shrink-0" data-i18n="add">
+                                    ${t('add')}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showFoodDetails(itemId) {
+            const menu = JSON.parse(localStorage.getItem(`hg-menu-${currentRestaurant.id}`) || '[]');
+            const item = menu.find(i => i.id === itemId);
+            if (!item) return;
+
+            document.getElementById('details-food-name').textContent = t(item.name);
+            document.getElementById('details-food-img').src = item.image || 'https://via.placeholder.com/400';
+            
+            const ingText = item.ingredients.startsWith('ing_') ? t(item.ingredients) : item.ingredients;
+            document.getElementById('details-ingredients').textContent = ingText;
+            
+            const allergensContainer = document.getElementById('details-allergens');
+            if (item.allergens && item.allergens.length > 0) {
+                allergensContainer.innerHTML = item.allergens.map(a => {
+                    const key = a.toLowerCase().replace(/\s+/g, '');
+                    const label = t(`contains${key.charAt(0).toUpperCase() + key.slice(1)}`) || a;
+                    return `<span class="dietary-badge allergen-badge">⚠️ ${label}</span>`;
+                }).join('');
+            } else {
+                allergensContainer.innerHTML = `<span class="text-sm text-muted">${t('none')}</span>`;
+            }
+
+            const dietaryContainer = document.getElementById('details-dietary');
+            if (item.dietary && item.dietary.length > 0) {
+                dietaryContainer.innerHTML = item.dietary.map(d => {
+                    const label = t(d);
+                    let icon = '';
+                    switch(d) {
+                        case 'vegetarian': icon = '🌱'; break;
+                        case 'vegan': icon = '🌿'; break;
+                        case 'gluten-free': icon = '🌾'; break;
+                        case 'dairy-free': icon = '🥛'; break;
+                        case 'nut-free': icon = '🥜'; break;
+                        case 'spicy': icon = '🌶️'; break;
+                    }
+                    return `<span class="dietary-badge veg-badge">${icon} ${label}</span>`;
+                }).join('');
+            } else {
+                dietaryContainer.innerHTML = `<span class="text-sm text-muted">${t('standard')}</span>`;
+            }
+
+            document.getElementById('food-details-modal').classList.remove('hidden');
+        }
+
+        function closeFoodDetails() {
+            document.getElementById('food-details-modal').classList.add('hidden');
+        }
+
+        function filterMenuCategory(cat) {
+            document.querySelectorAll('.menu-cat').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-subtle', 'text-muted');
+            });
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-subtle', 'text-muted');
+            loadMenuItems(cat);
+        }
+
+        function addToCart(itemId) {
+            const menu = JSON.parse(localStorage.getItem(`hg-menu-${currentRestaurant.id}`) || '[]');
+            const item = menu.find(i => i.id === itemId);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === itemId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1, restaurantId: currentRestaurant.id });
+            }
+           
+            updateCartUI();
+            loadMenuItems();
+        }
+
+        function updateCartQty(itemId, change) {
+            const idx = cart.findIndex(c => c.id === itemId);
+            if (idx === -1) return;
+
+            const newQty = cart[idx].quantity + change;
+            if (newQty <= 0) {
+                removeFromCart(itemId);
+                return;
+            } else {
+                cart[idx].quantity = newQty;
+            }
+           
+            updateCartUI();
+            loadMenuItems();
+        }
+
+        function removeFromCart(itemId) {
+            const idx = cart.findIndex(c => c.id === itemId);
+            if (idx > -1) {
+                cart.splice(idx, 1);
+                updateCartUI();
+                loadMenuItems();
+            }
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+           
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('cart-total').textContent = total.toFixed(2);
+           
+            const floatingCart = document.getElementById('floating-cart');
+            if (count > 0 && !document.getElementById('view-menu').classList.contains('hidden')) {
+                floatingCart.classList.remove('hidden');
+                if (isTableFromQR && currentTable && diningMode === 'dine-in') {
+                    document.getElementById('call-waiter-btn').classList.remove('hidden');
+                }
+            } else {
+                floatingCart.classList.add('hidden');
+                document.getElementById('call-waiter-btn').classList.add('hidden');
+            }
+        }
+
+        function callWaiter() {
+            if (!currentTable) return;
+            
+            showToast(t('waiterCalled') + ' ' + currentTable);
+            
+            const btn = document.querySelector('#call-waiter-btn button');
+            btn.innerHTML = '<i class="fas fa-check text-xl"></i><span class="text-[10px] font-bold uppercase tracking-wider">Called</span>';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-bell text-xl"></i><span class="text-[10px] font-bold uppercase tracking-wider" data-i18n="callWaiter">' + t('callWaiter') + '</span>';
+            }, 3000);
+        }
+
+        function startScanner() {
+            showView('view-scanner');
+           
+            html5QrcodeScanner = new Html5Qrcode("reader");
+            html5QrcodeScanner.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                onScanSuccess,
+                onScanFailure
+            ).catch(err => {
+                console.error("Scanner error:", err);
+                alert("Camera access denied or not available. Please ensure you're on HTTPS or localhost.");
+                stopScanner();
+                showView('view-restaurants');
+            });
+        }
+
+        function stopScanner() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().catch(() => {});
+                html5QrcodeScanner = null;
+            }
+        }
+
+        function onScanSuccess(decodedText) {
+            try {
+                const url = new URL(decodedText);
+                const params = new URLSearchParams(url.search);
+                const table = params.get('table');
+                const restId = params.get('rest');
+               
+                if (table && restId) {
+                    stopScanner();
+                   
+                    const restaurants = JSON.parse(localStorage.getItem('hg-restaurants') || '[]');
+                    const restaurant = restaurants.find(r => r.id === restId);
+                   
+                    if (restaurant) {
+                        window.pendingQRData = { table, restaurant };
+                        showLanguageSelectorForQR();
+                    } else {
+                        alert("Restaurant not found");
+                        showView('view-restaurants');
+                    }
+                }
+            } catch (e) {
+                console.error("Invalid QR code", e);
+            }
+        }
+
+        function showLanguageSelectorForQR() {
+            const modal = document.getElementById('language-modal');
+            modal.classList.remove('hidden');
+            renderLanguageList();
+            
+            document.querySelectorAll('#language-list button').forEach(btn => {
+                btn.onclick = () => {
+                    const langCode = availableLanguages.find(l => 
+                        btn.textContent.includes(l.name)
+                    ).code;
+                    setLanguage(langCode, true);
+                    document.getElementById('language-modal').classList.add('hidden');
+                    
+                    if (window.pendingQRData) {
+                        processQRScan(window.pendingQRData.table, window.pendingQRData.restaurant);
+                        window.pendingQRData = null;
+                    }
+                };
+            });
+        }
+
+        function processQRScan(table, restaurant) {
+            currentRestaurant = restaurant;
+            currentTable = parseInt(table);
+            diningMode = 'dine-in';
+            isTableFromQR = true;
+            
+            document.getElementById('menu-table-num').textContent = table;
+            document.getElementById('menu-table-display').classList.remove('hidden');
+            document.getElementById('menu-dining-mode').textContent = t('dineIn');
+            
+            document.getElementById('menu-restaurant-name').textContent = t(restaurant.name);
+            document.getElementById('menu-restaurant-type').textContent = restaurant.type;
+            document.getElementById('menu-restaurant-location').textContent = `📍 ${restaurant.location}`;
+            document.getElementById('menu-restaurant-address').textContent = restaurant.address || '';
+            
+            // Show distance in QR scan mode too
+            const distanceBadge = document.getElementById('menu-distance-badge');
+            if (restaurant.distance) {
+                distanceBadge.textContent = `${restaurant.distance} mi`;
+                distanceBadge.classList.remove('hidden');
+            } else {
+                distanceBadge.classList.add('hidden');
+            }
+            
+            document.getElementById('menu-restaurant-img').src = restaurant.image;
+            
+            const favBtn = document.getElementById('menu-favorite-btn');
+            if (isFavorite(restaurant.id)) {
+                favBtn.classList.add('active');
+                favBtn.classList.remove('text-gray-400');
+            } else {
+                favBtn.classList.remove('active');
+                favBtn.classList.add('text-gray-400');
+            }
+            
+            const categories = restaurant.settings.categories || ['All'];
+            const catContainer = document.getElementById('menu-categories');
+            catContainer.innerHTML = `<button onclick="filterMenuCategory('all')" class="menu-cat active px-4 py-2 bg-subtle rounded-full text-sm font-medium whitespace-nowrap">${t('all')}</button>`;
+            categories.forEach(cat => {
+                catContainer.innerHTML += `<button onclick="filterMenuCategory('${cat}')" class="menu-cat px-4 py-2 bg-subtle rounded-full text-sm font-medium whitespace-nowrap text-muted">${cat}</button>`;
+            });
+            
+            loadMenuItems();
+            loadReviews(restaurant.id);
+            showView('view-menu');
+            showToast(t('table') + ' ' + table + ' at ' + t(restaurant.name));
+        }
+
+        function onScanFailure(error) {
+            // Scan failed, ignore continuous failures
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-full z-50 animate-fade-in';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function openCheckout() {
+            if (!currentRestaurant || cart.length === 0) return;
+           
+            if (!diningMode) {
+                showDiningModeSelector();
+                return;
+            }
+           
+            renderCheckoutContent();
+            showView('view-checkout');
+        }
+
+        function showDiningModeSelector() {
+            const content = document.getElementById('checkout-content');
+            const showDineIn = isTableFromQR;
+            
+            content.innerHTML = `
+                <div class="card rounded-2xl p-6 border text-center">
+                    <h3 class="text-xl font-bold mb-2" data-i18n="selectDiningMode">${t('selectDiningMode')}</h3>
+                    <p class="text-sm text-muted mb-6" data-i18n="selectDineInOrOther">${t('selectDineInOrOther')}</p>
+                    
+                    <div class="space-y-3">
+                        ${showDineIn ? `
+                        <button onclick="selectDiningMode('dine-in')" class="dining-mode-card w-full p-4 border-2 rounded-2xl text-left flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold" data-i18n="dineIn">${t('dineIn')}</h4>
+                                <p class="text-xs text-muted">${t('table')} ${currentTable}</p>
+                            </div>
+                        </button>
+                        ` : ''}
+                        
+                        <button onclick="selectDiningMode('pre-order')" class="dining-mode-card w-full p-4 border-2 rounded-2xl text-left flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold" data-i18n="preOrder">${t('preOrder')}</h4>
+                                <p class="text-xs text-muted">Order ahead for pickup</p>
+                            </div>
+                        </button>
+                        
+                        <button onclick="selectDiningMode('takeout')" class="dining-mode-card w-full p-4 border-2 rounded-2xl text-left flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold" data-i18n="takeout">${t('takeout')}</h4>
+                                <p class="text-xs text-muted">Pickup ASAP</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            `;
+            showView('view-checkout');
+        }
+
+        function selectDiningMode(mode) {
+            diningMode = mode;
+            
+            if (mode === 'dine-in' && !currentTable) {
+                showTableSelector();
+                return;
+            }
+            
+            renderCheckoutContent();
+        }
+
+        function renderCheckoutContent() {
+            const content = document.getElementById('checkout-content');
+            const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+            
+            let modeDisplay = '';
+            let modeDetails = '';
+            
+            switch(diningMode) {
+                case 'dine-in':
+                    modeDisplay = t('dineIn');
+                    modeDetails = `${t('table')} ${currentTable}`;
+                    break;
+                case 'pre-order':
+                    modeDisplay = t('preOrder');
+                    modeDetails = `<select class="input mt-2 w-full p-2 rounded-lg text-sm">
+                        <option>${t('asap')}</option>
+                        <option>15 min</option>
+                        <option>30 min</option>
+                        <option>45 min</option>
+                        <option>1 hour</option>
+                    </select>`;
+                    break;
+                case 'takeout':
+                    modeDisplay = t('takeout');
+                    modeDetails = t('asap');
+                    break;
+            }
+            
+            let availablePayments = currentRestaurant.settings.paymentMethods || [];
+            if (diningMode !== 'dine-in') {
+                availablePayments = availablePayments.filter(p => p !== 'cash');
+            }
+            
+            content.innerHTML = `
+                <div class="card rounded-2xl p-4 border">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold" data-i18n="diningMode">${t('diningMode')}</h3>
+                        <button onclick="showDiningModeSelector()" class="text-xs text-primary" data-i18n="change">${t('change')}</button>
+                    </div>
+                    <div class="bg-subtle rounded-xl p-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                                <i class="fas fa-${diningMode === 'dine-in' ? 'utensils' : diningMode === 'pre-order' ? 'clock' : 'shopping-bag'}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">${modeDisplay}</h4>
+                                <div class="text-sm text-muted">${modeDetails}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-4 border">
+                    <h3 class="font-bold mb-4" data-i18n="orderSummary">${t('orderSummary')}</h3>
+                    ${cart.map(item => `
+                        <div class="flex justify-between items-center py-3 border-b border-current border-opacity-10">
+                            <div class="flex items-center gap-3">
+                                <span class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">${item.quantity}</span>
+                                <span>${t(item.name)}</span>
+                            </div>
+                            <span class="font-bold">$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `).join('')}
+                    <div class="flex justify-between items-center pt-3 text-xl font-bold">
+                        <span>Total</span>
+                        <span class="text-primary">$${total.toFixed(2)}</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-4 border">
+                    <h3 class="font-bold mb-4" data-i18n="paymentMethod">${t('paymentMethod')}</h3>
+                    ${diningMode !== 'dine-in' ? `<p class="text-xs text-muted mb-3 italic" data-i18n="cashNotAvailable">${t('cashNotAvailable')}</p>` : ''}
+                    <div class="grid grid-cols-2 gap-3">
+                        ${availablePayments.map(m => `
+                            <button onclick="selectPayment('${m}')" class="payment-btn p-3 border-2 rounded-xl flex items-center gap-2 capitalize ${selectedPayment === m ? 'border-primary bg-primary/10' : 'border-transparent bg-subtle'}">
+                                <i class="fas fa-${m === 'cash' ? 'money-bill' : m === 'card' ? 'credit-card' : m === 'applepay' ? 'apple' : m === 'wechat' ? 'comment' : m === 'alipay' ? 'a' : 'mobile-alt'}"></i>
+                                ${m === 'applepay' ? 'Apple Pay' : m}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <button onclick="placeOrder()" id="place-order-btn" class="w-full py-4 bg-primary text-white rounded-2xl font-bold text-lg shadow-lg shadow-red-600/20 disabled:opacity-50" disabled data-i18n="placeOrder">
+                    ${t('placeOrder')}
+                </button>
+            `;
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            const qrCode = currentRestaurant.settings.paymentQR?.[method];
+            if (qrCode) {
+                showPaymentQR(qrCode);
+                return;
+            }
+            
+            document.querySelectorAll('.payment-btn').forEach(btn => {
+                btn.classList.remove('border-primary', 'bg-primary/10');
+                btn.classList.add('border-transparent', 'bg-subtle');
+            });
+            event.currentTarget.classList.remove('border-transparent', 'bg-subtle');
+            event.currentTarget.classList.add('border-primary', 'bg-primary/10');
+            document.getElementById('place-order-btn').disabled = false;
+        }
+
+        function showPaymentQR(qrUrl) {
+            document.getElementById('payment-qr-image').src = qrUrl;
+            const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
+            document.getElementById('payment-amount-display').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('payment-qr-modal').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('place-order-btn').disabled = false;
+            }, 1000);
+        }
+
+        function closePaymentQR() {
+            document.getElementById('payment-qr-modal').classList.add('hidden');
+            document.querySelectorAll('.payment-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes('wechat') || btn.textContent.toLowerCase().includes('alipay')) {
+                    btn.classList.remove('border-transparent', 'bg-subtle');
+                    btn.classList.add('border-primary', 'bg-primary/10');
+                }
+            });
+        }
+
+        function placeOrder() {
+            if (!selectedPayment) return;
+           
+            const order = {
+                id: Date.now(),
+                restaurantId: currentRestaurant.id,
+                restaurantName: currentRestaurant.name,
+                table: currentTable,
+                diningMode: diningMode,
+                items: [...cart],
+                total: cart.reduce((s, i) => s + (i.price * i.quantity), 0),
+                paymentMethod: selectedPayment,
+                status: 'fired',
+                date: new Date().toISOString(),
+                rated: false
+            };
+           
+            let orders = JSON.parse(localStorage.getItem('hg-orders') || '[]');
+            orders.push(order);
+            localStorage.setItem('hg-orders', JSON.stringify(orders));
+           
+            bc.postMessage({ type: 'NEW_ORDER', order });
+           
+            cart = [];
+            updateCartUI();
+            
+            if (diningMode !== 'dine-in') {
+                diningMode = null;
+                isTableFromQR = false;
+                currentTable = null;
+            }
+           
+            showToast(t('orderPlaced') || 'Order placed successfully!');
+            loadOrders();
+            showView('view-orders');
+        }
+
+        function setOrdersView(view) {
+            currentOrdersView = view;
+            const btnActive = document.getElementById('btn-active-orders');
+            const btnHistory = document.getElementById('btn-history-orders');
+            
+            if (view === 'active') {
+                btnActive.classList.add('bg-primary', 'text-white');
+                btnActive.classList.remove('text-muted');
+                btnHistory.classList.remove('bg-primary', 'text-white');
+                btnHistory.classList.add('text-muted');
+            } else {
+                btnHistory.classList.add('bg-primary', 'text-white');
+                btnHistory.classList.remove('text-muted');
+                btnActive.classList.remove('bg-primary', 'text-white');
+                btnActive.classList.add('text-muted');
+            }
+            
+            loadOrders();
+        }
+
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('hg-orders') || '[]');
+            const container = document.getElementById('orders-list');
+            
+            const filteredOrders = orders.filter(order => {
+                if (currentOrdersView === 'active') {
+                    return order.status !== 'completed';
+                } else {
+                    return order.status === 'completed' || order.rated;
+                }
+            });
+           
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-muted">
+                        <div class="w-20 h-20 bg-subtle rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-${currentOrdersView === 'active' ? 'receipt' : 'history'} text-2xl"></i>
+                        </div>
+                        <p>${currentOrdersView === 'active' ? t('noOrders') : t('noOrderHistory') || 'No order history yet'}</p>
+                        ${currentOrdersView === 'active' ? `
+                        <button onclick="showView('view-restaurants')" class="mt-4 px-6 py-2 bg-primary text-white rounded-full font-medium" data-i18n="browseRestaurants">${t('browseRestaurants')}</button>
+                        ` : ''}
+                    </div>
+                `;
+                return;
+            }
+           
+            container.innerHTML = filteredOrders.reverse().map(order => `
+                <div class="card rounded-2xl p-4 border">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-bold">${t(order.restaurantName)}</h4>
+                            <p class="text-sm text-muted">
+                                ${order.diningMode === 'dine-in' ? `${t('table')} ${order.table}` : 
+                                  order.diningMode === 'pre-order' ? t('preOrder') : t('takeout')} 
+                                • ${new Date(order.date).toLocaleDateString()}
+                            </p>
+                        </div>
+                        <span class="px-3 py-1 ${order.status === 'ready' ? 'bg-green-100 text-green-700' : order.status === 'completed' ? 'bg-gray-100 text-gray-600' : 'bg-orange-100 text-orange-700'} rounded-full text-xs font-bold capitalize">
+                            ${order.status}
+                        </span>
+                    </div>
+                    <div class="space-y-1 mb-3">
+                        ${order.items.map(i => `
+                            <p class="text-sm text-muted">${i.quantity}x ${t(i.name)}</p>
+                        `).join('')}
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-current border-opacity-10">
+                        <span class="text-muted text-sm capitalize">${order.paymentMethod === 'applepay' ? 'Apple Pay' : order.paymentMethod}</span>
+                        <span class="font-bold text-lg">$${order.total.toFixed(2)}</span>
+                    </div>
+                    ${order.status === 'ready' && currentOrdersView === 'active' ? `
+                    <button onclick='showRatingModal(${JSON.stringify(order)})' class="w-full mt-3 py-2 bg-primary/10 text-primary rounded-xl font-medium text-sm">
+                        Rate Order
+                    </button>
+                    ` : ''}
+                    ${order.status === 'completed' || order.rated ? `
+                    <div class="w-full mt-3 py-2 bg-green-100 text-green-700 rounded-xl font-medium text-sm text-center">
+                        <i class="fas fa-check mr-1"></i> Completed
+                    </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function showPaymentMethods() {
+            alert('Payment methods management would open here');
+        }
+
+        function clearAllData() {
+            if (confirm('Clear all app data? This cannot be undone.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function backToMenu() {
+            showView('view-menu');
+        }
+    </script>
+</body>
+</html>
